@@ -43,7 +43,7 @@ def freeze():
     with tf.Session() as sess:
         # input_data = tf.placeholder(tf.float32, [1, args.new_size[1], args.new_size[0], 3], name='input_data')
         input_data = tf.placeholder(tf.float32, [None, None, None, 3], name='image_tensor')
-        yolo_model = yolov3(args.num_class, anchors)
+        yolo_model = yolov3(num_class, anchors)
         with tf.variable_scope('yolov3'):
             pred_feature_maps = yolo_model.forward(input_data, False)
         pred_boxes, pred_confs, pred_probs = yolo_model.predict(pred_feature_maps)
@@ -55,6 +55,10 @@ def freeze():
 
         saver = tf.train.Saver()
         saver.restore(sess, args.restore_path)
+
+        # op = sess.graph.get_operations()
+        # for m in op:
+        #     print(m.values())
 
         boxes_, scores_, labels_ = sess.run([boxes, scores, labels], feed_dict={input_data: img})
 
@@ -92,7 +96,7 @@ def main():
     # freeze model
     freeze()
     # test pb
-    test_pb()
+    # test_pb()
 
 
 if __name__ == '__main__':
