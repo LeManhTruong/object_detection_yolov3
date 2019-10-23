@@ -3,4 +3,5 @@
 __pycache__
 *__pycache__
 data/darknet_weights
+data/demo
 *.pb
